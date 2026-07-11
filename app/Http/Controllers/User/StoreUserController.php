@@ -11,8 +11,7 @@ class StoreUserController
     public function __invoke(StoreUserRequest $request){
         $userDto = $request->toDto();
         $this->userService->store($userDto);
-        return response()->json(['message' => 'User created successfully'
-            ,201]);
+        return response()->json(['message' => 'User created successfully'],201);
 
     }
 }

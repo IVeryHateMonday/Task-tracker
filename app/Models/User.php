@@ -14,6 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property string $id
+ * @property string $password
  */
 
 #[Fillable(['name', 'email', 'password'])]

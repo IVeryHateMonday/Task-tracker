@@ -12,8 +12,7 @@ class LoginUserController
     public function __invoke(LoginUserRequest $request): JsonResponse
     {
         $token = $this->userService->authenticate(
-            $request->input('email'),
-            $request->input('password')
+            $request->toDto()
         );
 
         return response()->json([

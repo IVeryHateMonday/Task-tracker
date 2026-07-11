@@ -21,7 +21,7 @@ class LoginUserRequest extends FormRequest
         return new UserDto(
             name: null,
             email: $validated['email'],
-            password: Hash::make($validated['password'])
+            password: $validated['password']
         );
     }
 }

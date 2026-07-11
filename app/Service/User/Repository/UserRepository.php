@@ -10,24 +10,24 @@ use Illuminate\Validation\ValidationException;
 class UserRepository
 {
     public function find($id):?User{
-        return User::where('id',$id)->first();
+        return User::query()->where('id',$id)->first();
     }
-    public function findByEmail($email)
+    public function findByEmail($email): ?User
     {
-        return User::where('email', $email)->first();
+        return User::query()->where('email', $email)->first();
     }
     public function store(UserDto $userDto):void
     {
-        User::create([
+        User::query()->create([
             'name'     => $userDto->name,
             'email'    => $userDto->email,
             'password' => $userDto->password,
         ]);
     }
-    public function authenticate(string $email, string $password): string
+    public function authenticate(UserDto $dto): string
     {
-        $user = $this->findByEmail($email);
-        if (!$user || !Hash::check($password, $user->password)) {
+        $user = $this->findByEmail($dto->email);
+        if (!$user || !Hash::check($dto->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Невірні облікові дані (email або пароль).'],
             ]);

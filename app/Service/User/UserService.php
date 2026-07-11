@@ -12,8 +12,8 @@ readonly class UserService
     public function store(UserDto $userDto){
         $this->userRepository->store($userDto);
     }
-    public function authenticate($email, $password): string{
-        return $this->userRepository->authenticate($email, $password);
+    public function authenticate(UserDto $userDto): string{
+        return $this->userRepository->authenticate($userDto);
     }
 
 }
