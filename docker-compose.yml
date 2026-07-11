@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+    # Сервіс додатку (PHP)
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: laravel-task-tracker-app
+        container_name: task-tracker-app
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: app
+        volumes:
+            - .:/var/www
+        networks:
+            - task-tracker-network
+
+    webserver:
+        image: nginx:alpine
+        container_name: task-tracker-webserver
+        restart: unless-stopped
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d/
+        networks:
+            - task-tracker-network
+        depends_on:
+            - app
+
+    db:
+        image: mysql:8.0
+        container_name: task-tracker-db
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: task_tracker
+            MYSQL_ROOT_PASSWORD: root_password
+            MYSQL_PASSWORD: user_password
+            MYSQL_USER: laravel_user
+        volumes:
+            - dbdata:/var/lib/mysql
+        networks:
+            - task-tracker-network
+
+networks:
+    task-tracker-network:
+        driver: bridge
+
+volumes:
+    dbdata:
+        driver: local
